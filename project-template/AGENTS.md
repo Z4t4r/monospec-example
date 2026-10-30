@@ -40,7 +40,7 @@ pwsh -NoProfile -File ./project-template/install.ps1 -Target ../target-project
 
 FEV 保留全部 35 节（含 Hierarchical / Parallel Investigation、Run delivery、Artifact Value、Retention）；ICD 保留全部 19 节与 L1–L4。BMAD、CED、DOCS、technology-first、standard-words 正文与来源相同。Blender 原 §12 / §30、UE5 原 §42 / §43、Physics 原 §37 属于被排除集成，整节移除；其余 heading 保留原编号，便于 diff 与追溯。
 
-[`source-map.json`](source-map.json) 记录 source revision、逐文件 normalized SHA-256、原文 / template 行数、heading 保留数与排除 section number。除领域剔除外，仅对业务名称、本机绑定、历史链接和相应目录路由做 portable adaptation；不再用摘要替代完整机制。
+[`source-map.json`](source-map.json) 记录 source revision（公开分发时为 `withheld`）、逐文件 normalized SHA-256、原文 / template 行数、heading 保留数与排除 section number。除领域剔除外，仅对业务名称、本机绑定、历史链接和相应目录路由做 portable adaptation；不再用摘要替代完整机制。
 
 MonoSpec host 通过 `.hagicode/monospecs.yaml` 注册多个 `repos/<project>/`，`description` 指向 `repos-meta/<project>/`；保留 `version`、`repo_dir`、`commit_when_archive` 和每个 repository entry 的全部字段结构。初始 `repositories: []`，使用注释示例填入目标项目真实注册项。不是单一业务源码仓，也不自动 clone registry 中的项目。
 
@@ -61,6 +61,6 @@ pwsh -NoProfile -File ./bootstrap/project-template/tests/run-tests.ps1 -SourceRo
 Compress-Archive -Path ./bootstrap/project-template -DestinationPath ./project-template.zip
 ```
 
-只分发此 package 或上述 ZIP，禁止把源仓、`.git/`、本机配置或未审核目录一同打包。Tests 检查空目录安装、重复安装、conflict preflight、WhatIf、path traversal、symlink / junction、payload privacy、内部链接、完整 Trait 保留和 MonoSpec schema。`-SourceRoot` 额外检查来源 hash、FEV 全部机制原文和 ICD 仅改变领域示例；`-PythonExecutable` 在安装后的隔离目标中执行 FEV P0–P8、Evidence helper tests 和 DOCS validator。P9 live Editor / MCP 不随包宣称通过。
+只分发此 package 或上述 ZIP，禁止把源仓、`.git/`、本机配置或未审核目录一同打包。Tests 检查空目录安装、重复安装、conflict preflight、WhatIf、path traversal、symlink / junction、payload privacy、内部链接、完整 Trait 保留和 MonoSpec schema。`-ForbiddenIdentity` 接收来源项目名称、账户名等不得出现在 payload 中的字符串，只在运行时传入，不写进本 package；`-SourceRoot` 额外检查来源 hash、FEV 全部机制原文和 ICD 仅改变领域示例；`-PythonExecutable` 在安装后的隔离目标中执行 FEV P0–P8、Evidence helper tests 和 DOCS validator。P9 live Editor / MCP 不随包宣称通过。
 
 写入期间的磁盘 / 权限错误可能留下部分新文件；修复后可重跑，已有不同内容仍会被保留。

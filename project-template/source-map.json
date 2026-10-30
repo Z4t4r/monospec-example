@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_revision": "646177c2a0a2715989ccba372efde7e452026bc3",
+  "source_revision": "withheld",
   "normalization": "UTF-8 text, CRLF -> LF",
   "policy": "Preserve full current contracts; remove excluded domain sections, replace domain examples, generalize business and local bindings; omit history.",
   "files": [

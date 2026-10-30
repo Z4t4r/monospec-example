@@ -3,7 +3,10 @@
 [CmdletBinding()]
 param(
     [string]$SourceRoot,
-    [string]$PythonExecutable
+    [string]$PythonExecutable,
+    # Source-project names, account names or other identities that must not appear in the payload.
+    # Pass them at run time; never hard-code them in this package.
+    [string[]]$ForbiddenIdentity = @()
 )
 
 Set-StrictMode -Version Latest
@@ -168,8 +171,11 @@ try {
         $deployed = Join-Path $target $entry.target
         Assert (Test-Path -LiteralPath $source -PathType Leaf) "Template exists: $($entry.source)"
         $content = [System.IO.File]::ReadAllText($deployed)
-        Assert ($content -notmatch '(?i)MMD|PMX|PMD|VMD|VRM4U|mmd_tools|mmd_core|Velina|Parvati|CharacterSamples|BlenderTools-MonoSpecs') "No excluded domain / source business identity: $($entry.target)"
-        Assert ($content -notmatch '(?i)(?<![a-z])[A-Z]:[\\/]|/Users/|/home/|file://|localhost:\d|127\.0\.0\.1:\d|77162') "No machine path / endpoint / account: $($entry.target)"
+        Assert ($content -notmatch '(?i)MMD|PMX|PMD|VMD|VRM4U|mmd_tools|mmd_core') "No excluded domain: $($entry.target)"
+        foreach ($identity in $ForbiddenIdentity) {
+            Assert ($content -notmatch ('(?i)' + [regex]::Escape($identity))) "No forbidden source identity: $($entry.target)"
+        }
+        Assert ($content -notmatch '(?i)(?<![a-z])[A-Z]:[\\/]|/Users/|/home/|file://|localhost:\d|127\.0\.0\.1:\d') "No machine path / endpoint: $($entry.target)"
         Assert ($content -notmatch '(?i)-----BEGIN .*PRIVATE KEY|sk-[A-Za-z0-9]{16}|gh[pousr]_[A-Za-z0-9]{16}') "No recognized credential pattern: $($entry.target)"
         Assert ($entry.target -notmatch '(?i)(^|/)README\.md$|\.(blend|uasset|umap|fbx|glb)$') 'No directory README or assets'
         if ($entry.target -notmatch '\.md$') { continue }
