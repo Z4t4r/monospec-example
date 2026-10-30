@@ -1,4 +1,4 @@
-"""Blender Operator and menu entry for the example character export."""
+"""blender-addon: Blender Operator and menu entry for the example character export."""
 
 from __future__ import annotations
 

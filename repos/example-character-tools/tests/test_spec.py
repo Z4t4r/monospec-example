@@ -1,4 +1,4 @@
-"""Host CPython unit tests for example_character_tools.spec (no Blender)."""
+"""host CPython test: unit tests for example_character_tools.spec (no Blender)."""
 
 from __future__ import annotations
 

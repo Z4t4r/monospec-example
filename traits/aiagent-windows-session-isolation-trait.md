@@ -5,12 +5,15 @@
 ```yaml
 trait:
   id: aiagent-windows-session-isolation
-  version: "1.1.0"
-  date: "2026-10-14"
+  version: "1.2.0"
+  date: "2026-10-30"
   status: "Proposed"
   type: "Runtime Isolation Policy"
   platform: "Windows / Unreal Engine 5.8"
   dedicated_windows_user: "AIAGENT"
+  revisions:
+    - "1.2.0 (2026-10-30): §3.1 凭据位置改为 `.local/aiagent.yaml`；§4 新增 One-shot batch Worker 与记录字段对应；§7 本机路径放 `.local/`"
+    - "1.1.0 (2026-10-14)"
 ```
 
 Trait：Agent 在 Windows 上执行 UE5.8 自动化时，隔离 `AIAGENT` 运行环境，保护 Human Desktop。
@@ -145,6 +148,23 @@ taskkill /F /IM UnrealEditor.exe
 - 恢复任务上下文与必要状态。
 - 不得重启 Human Editor。
 
+### One-shot batch Worker
+
+需要干净、可重复的 project state 时（例如 FEV / ICD Run 的 import 与 readback），允许不复用常驻 Worker，而是每个 Run 新建一个 Worker project，执行一个 Editor Python 脚本后退出。“优先复用” 只适用于常驻 / 交互式 Worker。
+
+要求：
+
+1. **新建 project**：Worker root 不得已存在；写入 `worker.json`（`owner: AIAGENT`、`purpose`、`graph`）作为归属标记，只启用任务需要的 plugin。不得复制或打开 Human project。
+2. **输入复制**：输入文件复制到 Worker root 内，并只对该 root 授予 AIAGENT 写权限；不得为 Worker 放宽 Human 工作区权限。
+3. **Lease**：启动前取得 `fev_parallel` lease（resource = 该 Worker root），运行中 heartbeat，结束时 release；同一 root 不得重复启动。
+4. **启动**：以 AIAGENT 身份启动 `UnrealEditor.exe <project> -unattended -NullRHI -ExecutePythonScript=<entry>`（需要渲染时按 §8 使用 GPU-capable 参数）；启动后核对 process owner 与命令行中的 Worker root，任何可见窗口出现在 Human Desktop 时立即终止该 PID。
+5. **退出**：脚本结束时调用 `quit_editor()`；超时只终止本次启动记录中的 PID。
+6. **Evidence**：Worker 输出复制回 Run 的 `evidence/`；Worker root 视为可清理的临时目录。
+
+记录字段对应：上文 `worker:` 记录中的 `pid`、`session_id`、`project_path`、`start_time` 由 process record（pid、owner、session、command、started、exit_code）与 `worker.json` 共同提供；`execution_id` 为 Run ID。
+
+参考实现（示例项目）：`pipelines/_shared/host_run/ue_worker.py` + `windows_worker.py`。
+
 ## 5. Build Policy
 
 根据任务选择最小必要执行环境。
@@ -195,6 +215,7 @@ MCP 应明确连接到 AIAGENT Worker，而不是自动选择任意 UE Editor。
 - 使用版本控制或明确的同步机制交换变更。
 - 不得覆盖 Human 未提交的修改。
 - Agent Evidence 和临时文件应独立存储。
+- 本机 Worker root、engine 路径与凭据位置写在仓库根 gitignored 的 `.local/`，不写入 tracked config 或 Trait。
 
 推荐结构：
 

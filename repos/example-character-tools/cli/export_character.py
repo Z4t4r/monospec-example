@@ -1,4 +1,4 @@
-"""Headless CLI: blender --background --factory-startup --python cli/export_character.py -- --output-dir <dir>
+"""blender-addon (headless entry): Headless CLI: blender --background --factory-startup --python cli/export_character.py -- --output-dir <dir>
 [--spec <json>]
 
 Exit codes: 0 exported; 2 invalid input (spec / arguments); 1 export failure. Starts from an empty scene.

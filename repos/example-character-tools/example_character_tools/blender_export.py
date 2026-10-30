@@ -1,4 +1,4 @@
-"""Blender 5.1 build and FBX export of a CharacterSpec (requires bpy).
+"""blender-addon: Blender 5.1 build and FBX export of a CharacterSpec (requires bpy).
 
 The unit rule comes from Root FEV example-char: scene ``scale_length`` 0.01 with data in centimetres, so the
 FBX unit factor is 1 and UE does not write a scale of 100 into the root bone.

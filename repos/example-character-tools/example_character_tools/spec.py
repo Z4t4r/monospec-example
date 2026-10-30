@@ -1,4 +1,4 @@
-"""Character description for the example exporter; pure Python, no bpy (unit-testable on host CPython).
+"""blender-addon (host-testable, no bpy): Character description for the example exporter; pure Python, no bpy (unit-testable on host CPython).
 
 Units: metres, Blender Z-up, the character faces -Y. Every deform bone owns one axis-aligned box rigidly
 weighted to it. Behavior follows Root FEV example-char (pipelines/graphs/example/example-character-export-fev).

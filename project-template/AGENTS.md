@@ -36,7 +36,7 @@ pwsh -NoProfile -File ./project-template/install.ps1 -Target ../target-project
 
 不复制来源业务项目 registry、glossary 词条、Active Graph、Run、Research、产品 spec、子仓、资产、business script、MCP config、Git history、机器路径、凭据、lease state、cache 或历史 validation report。领域内容只保留 Blender / UE5，剔除专属格式集成 Trait 及其相关段落；混合段落只替换相关示例，不删除通用规则。
 
-完整 Trait 包含：`agents-md-only`、`technology-first`、`bmad`、`fev`、`icd`、`ced`、`docs`、`pipelines`、`python-dialect`、`soft-realistic-anime-render`、`standard-words`、`chinese-technical-writing`、`transform-space-expert`、`blender-animation-domain-expert`、`ue5-animation-domain-expert`、`physics-domain-expert`、`aiagent-windows-session-isolation`。保留来源 metadata 的 version / status，未提升 maturity。
+完整 Trait 包含：`agents-md-only`、`technology-first`、`bmad`、`fev`、`icd`、`ced`、`docs`、`pipelines`、`python-dialect`、`soft-realistic-anime-render`、`standard-words`、`chinese-technical-writing`、`transform-space-expert`、`blender-animation-domain-expert`、`ue5-animation-domain-expert`、`physics-domain-expert`、`aiagent-windows-session-isolation`。保留来源 metadata 的 version / status，未提升 maturity；例外：本示例项目将 `aiagent-windows-session-isolation` 升至 `1.2.0`（One-shot batch Worker、`.local/` 凭据位置），`python-dialect` 增加 `_shared/host_run/` 与 `cli/` 落点，二者与来源仓暂不同步。
 
 FEV 保留全部 35 节（含 Hierarchical / Parallel Investigation、Run delivery、Artifact Value、Retention）；ICD 保留全部 19 节与 L1–L4。BMAD、CED、DOCS、technology-first、standard-words 正文与来源相同。Blender 原 §12 / §30、UE5 原 §42 / §43、Physics 原 §37 属于被排除集成，整节移除；其余 heading 保留原编号，便于 diff 与追溯。
 

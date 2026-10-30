@@ -1,4 +1,4 @@
-"""Example character tools: build a procedural character in Blender 5.1 and export a UE5-ready FBX.
+"""blender-addon: Example character tools: build a procedural character in Blender 5.1 and export a UE5-ready FBX.
 
 Blender add-on entry (Operator ``EXCHAR_OT_export_character``) plus a headless CLI
 (``cli/export_character.py``). ``spec`` is importable without Blender.

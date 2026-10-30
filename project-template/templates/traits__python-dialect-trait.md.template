@@ -13,10 +13,10 @@ Trait：编写或修改本仓 / `repos/<project>` 的 Python 之前，**先选�
 
 | 方言 | 允许落点 | 运行时 | 禁止 |
 |------|----------|--------|------|
-| host-evidence | `pipelines/_shared/cook_runtime/` | 宿主 CPython | `import bpy`；Node / TS 运行时 |
+| host-evidence | `pipelines/_shared/cook_runtime/`（证据包）；`pipelines/_shared/host_run/`（Blender / UE launcher、`.local` 配置解析、Run provenance） | 宿主 CPython | `import bpy` / `import unreal`；Node / TS 运行时；在 launcher 里改写资产或做 Graph 判定 |
 | host-transform | 对应 Graph 的 `scripts/`，并标 experimental | 宿主 CPython（不进 Blender） | `import bpy`；把本机绝对路径当唯一输入 |
 | blender-isolated | `repos/<project>/pipelines/`，或该 Graph 的 `scripts/` | Blender 5.1 内置解释器 | re-export 成业务公共 API；声称已产品化 |
-| blender-addon | `repos/<project>/<addon>/`，且仅在 OpenSpec **明确参考**对应 Graph 并落地之后 | 同上 | 新 pip 依赖；在 `register()` 顶层硬导入可选插件 |
+| blender-addon | `repos/<project>/<addon>/`；headless 入口放 `repos/<project>/cli/`；均仅在 OpenSpec **明确参考**对应 Graph 并落地之后 | 同上；`<addon>/` 内不 import `bpy` 的纯 Python 模块也可由宿主 CPython 测试 | 新 pip 依赖；在 `register()` 顶层硬导入可选插件；`__init__.py` 顶层 import 依赖 `bpy` 的模块（会使宿主测试无法 import） |
 | foreign | UE Editor Python、上游仓、`.agents/skills/`、`_bmad/` | 各自 | 套用本 trait 的 Blender 命名去重排 |
 | repository-policy | `.github/scripts/` | 宿主 CPython | `bpy`、业务实现、资产转换与写入 project artifacts |
 
@@ -27,7 +27,7 @@ Trait：编写或修改本仓 / `repos/<project>` 的 Python 之前，**先选�
 写文件之前 **MUST** 在回复或文件模块 docstring 里点明方言。缺方言 → **停止**，不要猜成「通用 Blender 脚本」。
 
 1. 文件会在 Blender 里执行（`bpy`）→ `blender-isolated` 或 `blender-addon`。未走 OpenSpec 产品化 → **只能** isolated。
-2. 文件只写证据包 / 读跑目录 → `host-evidence`。**MUST NOT** 为此引入 `bpy`。
+2. 文件只写证据包 / 读跑目录，或按 Graph 合同启动 Blender `--background` / AIAGENT UE Worker 并收集其输出 → `host-evidence`。**MUST NOT** 为此引入 `bpy`。
 3. 文件解析或改写磁盘资产、且不需要 Blender → `host-transform`，落在**该 Graph** 的 `scripts/`。
 4. 文件属于上游仓、UE Editor、BMAD → `foreign`。读可以；**MUST NOT** 按本 trait 重排其风格。
 5. 文件只读检查 repository policy、metadata 或 links，并由 CI 调用 → `repository-policy`，只能落在 `.github/scripts/`。
@@ -101,6 +101,8 @@ addon 与隔离 cook **共用**本节。隔离脚本额外遵守「隔离」小�
 - 输入由参数或 Graph `config.yaml` 传入。**MUST NOT** 把 `<machine-local-asset-root>` 一类本机绝对路径写成唯一合同。
 - 失败抛具体异常（`ValueError`、`FileNotFoundError`、`OSError`）。**MUST NOT** `except Exception` 后 `print` 并返回假成功。
 - **MUST NOT** 为 pipelines 引入 Node / TypeScript / pnpm 运行时。
+- Engine launcher **MUST** 复用 `pipelines/_shared/host_run/`：Blender 只用显式 `--background`，失败时不得改用 UI；UE 只按 [AIAGENT isolation Trait](./aiagent-windows-session-isolation-trait.md) 的 One-shot batch Worker 或已登记 Worker 运行。Graph `scripts/` 不另写 launcher。
+- 本机 executable、Worker root 与凭据位置只从 gitignored `.local/`（`environment.yaml`、`aiagent.yaml`）或环境变量读取；manifest 只记录来源，不记录凭据内容。
 
 `host-transform` 若要留存，放在**该 Graph** 的 `scripts/`，模块 docstring 标明 experimental。不要放进 `pipelines/_shared/cook_runtime/`（那里只放证据 helper），也不要放进仓库根 `scripts/`。
 
@@ -146,6 +148,7 @@ addon 与隔离 cook **共用**本节。隔离脚本额外遵守「隔离」小�
 | `cook_runtime` 里 `import bpy` | 禁止；证据 helper 保持无 Blender |
 | 把本机资产路径写死为唯一输入 | 参数或 `config.yaml` |
 | 缺证据就跳过 collector | `source: missing` |
+| 每个 Graph 各写一份 Blender / UE launcher，或把 engine 路径写进 `config.yaml` | 复用 `_shared/host_run/`；路径放 `.local/environment.yaml` |
 | 用本 trait 重排 upstream / BMAD 脚本 | foreign，不动风格 |
 | 把本文件复制进 `repos/<project>/traits/` | 只留 monospec `traits/`，子仓用指针 |
 
@@ -157,5 +160,6 @@ addon 与隔离 cook **共用**本节。隔离脚本额外遵守「隔离」小�
 - [ ] blender 路径是否用 Data API（ops 是否落在允许的三种例外里）？
 - [ ] 错误是否走了该方言的通道，而不是 `print` + 吞异常？
 - [ ] host 证据是否经 `cook_runtime`，缺证是否写了 `source: missing`？
+- [ ] 启动 Blender / UE 是否经 `_shared/host_run/`，本机路径与凭据是否只来自 `.local/`？
 - [ ] 是否引入了 Blender 内置解释器没有的依赖或更新语法？
 - [ ] 是否把 trait 同步进了子仓，或重排了 foreign 代码？
