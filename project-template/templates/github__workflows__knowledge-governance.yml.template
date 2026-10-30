@@ -1,0 +1,32 @@
+name: Knowledge Governance
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "traits/docs-trait.md"
+      - "docs/AGENTS.md"
+      - ".github/scripts/validate_docs_topics.py"
+      - ".github/knowledge-link-baseline.txt"
+      - ".github/workflows/knowledge-governance.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+      - "traits/docs-trait.md"
+      - "docs/AGENTS.md"
+      - ".github/scripts/validate_docs_topics.py"
+      - ".github/knowledge-link-baseline.txt"
+      - ".github/workflows/knowledge-governance.yml"
+
+jobs:
+  validate-docs-topics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate DOCS Topics
+        run: python .github/scripts/validate_docs_topics.py

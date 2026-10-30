@@ -1,0 +1,14 @@
+# Local configuration and private inputs
+/.local/
+/traits/local/
+/.env
+/.env.*
+!/.env.example
+# Local clones / assets: root AGENTS.md remains tracked
+/repos/*
+!/repos/AGENTS.md
+# Disposable outputs
+/tmp/
+/_tmp/
+**/__pycache__/
+**/runs/

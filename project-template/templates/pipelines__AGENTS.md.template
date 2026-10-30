@@ -1,0 +1,57 @@
+# pipelines — 验收 Graph Local Policy
+
+通用 Graph / Socket / Cook / Evidence / Acceptance 语义由 [`../traits/pipelines-trait.md`](../traits/pipelines-trait.md) 定义；Python 实现遵循 [`../traits/python-dialect-trait.md`](../traits/python-dialect-trait.md)。本文件只规定本仓 `pipelines/` 的目录归属、路由和选型。
+
+## 目录职责
+
+| 路径 | 职责 |
+|------|------|
+| `_shared/`、`_template/` | Cook runtime、evidence helper 与模板 |
+| `_shared/fev_parallel/` | FEV 1.2.0 Parallel Investigation coordinator（lease / ownership / provenance；host-evidence） |
+| `graphs/<domain>/<slug>/` | 现行 Graph / Subnet；单项协议在 `pipeline.md` |
+| `graphs/<domain>/AGENTS.md` | 本 domain 的 Active index 与专属 Local Policy |
+| `graphs/_retired/<YYYY-MM>/<slug>/` | 已退役 Graph；历史 run 保留 |
+
+现行 Cook Contract、Acceptance 与 Evidence 必须位于 `pipelines/`，不得只存在于 `docs/`。Graph 可以调用 `repos/` API，但不拥有业务代码，也不得为通过 Gate 修改业务实现。
+
+## DOCS design and Evidence handoff
+
+- DOCS Pipeline Design 是 implementation input，不是现行 Graph authority。新建或实质修改 Graph 时，若存在 approved design，`pipeline.md` 必须回链 design source 与关键 Decision。
+- handoff 后，Graph、script、contract、Acceptance 与 Run 是 actual behavior authority；实现偏离关键 Decision 时必须标记 `IMPLEMENTATION_DIVERGED` 并返回 DOCS 讨论，不得静默改写历史 design。
+- 新增或更新 DOCS、ICD、OpenSpec Evidence reference 时，被引用的 Run 必须有 stable identity，并记录 Graph identity、Git revision、输入资产、environment、configuration、result 与关键 artifact path；可能清理 raw output 时必须保留 durable manifest。
+- DOCS MAY 保存 Run 的 reusable analysis，但不得覆盖 Pipeline result 或签发 Pipeline Acceptance。
+
+## FEV Run delivery
+
+FEV Run 遵循 [FEV §33](../traits/fev-trait.md#33-run-delivery-and-report)：summary / manifest + report + Evidence，不生成 per-run acceptance，不等待用户 pass。既有 domain 的 Cook 后 acceptance 写回规则只适用于显式最终用户验收的业务 Graph。迁移触达的 Graph 时同步修改 config、writer 与合同；历史 Run 不回写。
+
+## Domain registry
+
+| domain | 范围 | 索引 |
+|--------|------|------|
+
+当前没有 Active domain；只在目标项目实际创建 Graph 时登记，不复制来源业务 Graph。
+
+新增 domain 必须先登记本表并创建同级 `AGENTS.md`，不得私建未登记 domain。
+
+## 选型与互斥
+
+1. 从请求取得 `domain`、`family`、`goal`；缺失时询问，不猜测。
+2. 读取对应 domain `AGENTS.md`，再核对候选 `config.yaml` 的 `status: active`、`family` 与 `goal`。
+3. 零个候选时询问是否新建；一个时使用；多个时停止并让用户选择。
+4. 同一 `domain + family + goal` 最多一个 Active Graph。冲突时由用户决定退役旧图、另开 goal 或取消。
+5. Cook 前执行 [cook-invoke skill](../.cursor/skills/pipelines-cook-invoke/SKILL.md) 查重，再读目标 `pipeline.md`、`config.yaml`，按需读取 `contract.yaml` 与 `acceptance.md`。
+
+## 本仓硬边界
+
+- 对象 preview Evidence 优先复用本项目已验证的 shared capture adapter；bootstrap 不复制来源的业务 capture adapter。提供明确 selector，避免 Graph 各自重写视觉搜索 / camera 调整循环；不得用 isolated preview 替代 beauty / MRQ / animation fidelity 的对应 Graph contract。
+
+- 所有 Blender runtime Graph 必须使用 headless，或在已确认的 `AIAGENT` Windows account / session 中启动 UI；禁止在 Human Windows account 启动 Blender UI。Headless launcher 必须显式传入 `--background`，不得失败后自动改用 UI。此规则适用于所有 domain。
+
+
+- 新 Graph 必须落在 `graphs/<domain>/<slug>/`，并登记到 domain Active index。
+- 日期目录仅用于 `runs/` 和 `_retired/`；不得把 Active Graph 放入日期目录。
+- Pipeline runtime 只使用 Python；不得引入 Node.js、TypeScript 或 pnpm。
+- Graph slug 不另建重复 `AGENTS.md`；其 authority 是 `pipeline.md` 与配套 machine-readable contract。
+- `native/` 等 helper 目录不是 Graph，不能登记为 Active；无完整 `config.yaml` 的 draft 也不能登记为 Active。
+- 并行 Sub-FEV / protected Editor MCP 必须经 `_shared/fev_parallel` lease boundary；不得假定 MCP 自带跨 Client locking。导入方式与 `cook_runtime` 相同：`sys.path` 加入 `pipelines/_shared` 后 `import fev_parallel`。自检：`python -m fev_parallel self-test`（cwd 或 `PYTHONPATH` 含 `pipelines/_shared`）。

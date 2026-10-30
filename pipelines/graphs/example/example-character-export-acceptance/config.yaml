@@ -1,0 +1,42 @@
+id: example-character-export-acceptance
+created: "2026-10-30"
+graph:
+  product: example-character-tools
+  domain: example
+  family: compose
+  goal: example-character-export-acceptance
+  status: active
+kind: Graph
+environment: local
+cook: new-object
+sockets:
+  start: production-example-character-tools
+  end: icd-example-character-export-acceptance
+icd:
+  change: openspec/changes/add-example-character-export
+  capability: example-character-export
+  target_level: L3
+  # FEV canonical data used as reference (data only; no FEV script is imported)
+  fev_canonical_inventory: pipelines/graphs/example/example-character-export-fev/canonical/character_inventory.json  # copy of blender-export Run 2026-10-30T154907
+  fev_canonical_sha256: 46900d5248170a89301c72fb0a8399ade4dcdf898055b79ded783272f18f94fc
+context:
+  project: repos/example-character-tools
+  ue_destination: /Game/ExampleCharacter
+  ue_asset_name: SKM_ExampleCharacter
+capture:
+  summary: {required: true, sink: summary.json}
+  report: {required: true, sink: report.md}
+  manifest: {required: true, sink: manifest.json}
+  evidence: {required: true, sink: evidence/}
+adapters:
+  cook:
+    mode: host-python
+    experimental: false
+    invokes:
+      - scripts/run_acceptance.py:main
+dependencies:
+  - example-character-export-fev   # reference data only
+humanGates: []  # machine acceptance to L3; no per-run user gate
+failurePolicy:
+  retries: 0
+  stopOnError: false

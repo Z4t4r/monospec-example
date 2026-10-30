@@ -1,0 +1,21 @@
+version: "1.0"
+repo_dir: repos
+commit_when_archive: true
+
+repositories:
+  # in-tree example project (tracked by this repository, not cloned); remove it in a target project
+  - path: "repos/example-character-tools"
+    url: "https://github.com/Z4t4r/monospec-example.git"
+    displayName: "example-character-tools"
+    description: "repos-meta/example-character-tools/"
+    optional: true
+    tags: [Blender, UnrealEngine]
+
+# Add only real projects authorized by the target project owner:
+# repositories:
+#   - path: "repos/<project>"
+#     url: "<repository-url>"
+#     displayName: "<project>"
+#     description: "repos-meta/<project>/"
+#     optional: true
+#     tags: [Blender]  # or [UnrealEngine]

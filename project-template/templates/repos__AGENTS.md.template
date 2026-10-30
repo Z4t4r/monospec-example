@@ -1,0 +1,10 @@
+# repos — 侧载业务项目
+
+遵循根 [AGENTS.md](../AGENTS.md)。主仓负责规范与编排，实际业务代码位于本目录的独立项目中。
+
+- 侧载 registry 由 [`.hagicode/monospecs.yaml`](../.hagicode/monospecs.yaml) 管理，字段说明见 [配置入口](../.hagicode/AGENTS.md)。主仓可以注册多个 Blender / UE5 业务项目。
+- 操作 `<project>/` 前先读 [`../repos-meta/AGENTS.md`](../repos-meta/AGENTS.md)、`repos-meta/<project>/AGENTS.md` 与子仓自身适用的 `AGENTS.md`；遇到真实冲突先解决，不默认覆盖。
+- 编排仓 Trait 不自动复制到子仓；metadata 使用指针，不建立第二份行为真源。
+- 子仓保留自身 Git history / remote / build / test workflow；不得因主仓 bootstrap 移动业务代码、重建历史或自动 push。
+- `.gitignore` 忽略 local clones；`repos/AGENTS.md` 保留在主仓。需要直接跟踪业务代码时由目标项目明确调整边界，不擅自改 nested Git。
+- Bootstrap 不自动 clone、启动 engine 或修改业务代码；新注册项不表示已交付能力。

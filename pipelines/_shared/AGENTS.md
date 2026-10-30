@@ -1,0 +1,11 @@
+# _shared — Cook Evidence 与 FEV Coordinator
+
+继承 [pipelines policy](../AGENTS.md) 与 [Python dialect](../../traits/python-dialect-trait.md)。
+
+- `cook_runtime/` 保存完整 host-evidence helper 与 regression tests；不 import `bpy`，不 re-export 成业务 API。
+- `fev_parallel/` 保存 FEV 1.2.0 coordinator、ownership、resource lease、provenance、aggregation、schemas 与 P0–P8 tests。
+- `host_run/` 保存 Blender `--background` launcher、AIAGENT UE5.8 Worker launcher（fresh Worker project + lease + `windows_worker.run_owned`）、`.local/environment.yaml` 解析与 Run provenance；不 import `bpy` / `unreal`。
+- Runtime 为宿主 CPython，运行前核对版本；应用本身不随 bootstrap 安装。不继承来源的 state database、cache、Run 或历史 validation report。
+- P9 必须在目标环境绑定真实 Worker / MCP 后独立验证；本包没有 live adapter，mock tests PASS 不表示 live operational support。
+- Host command 示例：在本目录执行 `python -m fev_parallel self-test`，以及 `python -m unittest cook_runtime.test_evidence`。
+- Shared helper 只提供机制，不签发产品 Acceptance、Human Promotion 或 engine readiness。

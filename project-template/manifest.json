@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0",
+  "profile": "monospec-blender-ue5-full",
+  "files": [
+    {
+      "source": "templates/claude.md.template",
+      "target": "CLAUDE.md"
+    },
+    {
+      "source": "templates/gitignore.template",
+      "target": ".gitignore"
+    },
+    {
+      "source": "templates/graphs-agents.md.template",
+      "target": "pipelines/graphs/AGENTS.md"
+    },
+    {
+      "source": "templates/template-agents.md.template",
+      "target": "pipelines/_template/AGENTS.md"
+    },
+    {
+      "source": "templates/specs-agents.md.template",
+      "target": "openspec/specs/AGENTS.md"
+    },
+    {
+      "source": "templates/changes-agents.md.template",
+      "target": "openspec/changes/AGENTS.md"
+    },
+    {
+      "source": "templates/traits__agents-md-only-trait.md.template",
+      "target": "traits/agents-md-only-trait.md"
+    },
+    {
+      "source": "templates/traits__aiagent-windows-session-isolation-trait.md.template",
+      "target": "traits/aiagent-windows-session-isolation-trait.md"
+    },
+    {
+      "source": "templates/traits__blender-animation-domain-expert-trait.md.template",
+      "target": "traits/blender-animation-domain-expert-trait.md"
+    },
+    {
+      "source": "templates/traits__bmad-trait.md.template",
+      "target": "traits/bmad-trait.md"
+    },
+    {
+      "source": "templates/traits__ced-trait.md.template",
+      "target": "traits/ced-trait.md"
+    },
+    {
+      "source": "templates/traits__chinese-technical-writing-trait.md.template",
+      "target": "traits/chinese-technical-writing-trait.md"
+    },
+    {
+      "source": "templates/traits__docs-trait.md.template",
+      "target": "traits/docs-trait.md"
+    },
+    {
+      "source": "templates/traits__fev-trait.md.template",
+      "target": "traits/fev-trait.md"
+    },
+    {
+      "source": "templates/traits__icd-trait.md.template",
+      "target": "traits/icd-trait.md"
+    },
+    {
+      "source": "templates/traits__physics-domain-expert-trait.md.template",
+      "target": "traits/physics-domain-expert-trait.md"
+    },
+    {
+      "source": "templates/traits__pipelines-trait.md.template",
+      "target": "traits/pipelines-trait.md"
+    },
+    {
+      "source": "templates/traits__python-dialect-trait.md.template",
+      "target": "traits/python-dialect-trait.md"
+    },
+    {
+      "source": "templates/traits__soft-realistic-anime-render-trait.md.template",
+      "target": "traits/soft-realistic-anime-render-trait.md"
+    },
+    {
+      "source": "templates/traits__standard-words-trait.md.template",
+      "target": "traits/standard-words-trait.md"
+    },
+    {
+      "source": "templates/traits__technology-first-trait.md.template",
+      "target": "traits/technology-first-trait.md"
+    },
+    {
+      "source": "templates/traits__transform-space-expert-trait.md.template",
+      "target": "traits/transform-space-expert-trait.md"
+    },
+    {
+      "source": "templates/traits__ue5-animation-domain-expert-trait.md.template",
+      "target": "traits/ue5-animation-domain-expert-trait.md"
+    },
+    {
+      "source": "templates/traits__AGENTS.md.template",
+      "target": "traits/AGENTS.md"
+    },
+    {
+      "source": "templates/AGENTS.md.template",
+      "target": "AGENTS.md"
+    },
+    {
+      "source": "templates/docs__AGENTS.md.template",
+      "target": "docs/AGENTS.md"
+    },
+    {
+      "source": "templates/openspec__AGENTS.md.template",
+      "target": "openspec/AGENTS.md"
+    },
+    {
+      "source": "templates/scripts__AGENTS.md.template",
+      "target": "scripts/AGENTS.md"
+    },
+    {
+      "source": "templates/github__AGENTS.md.template",
+      "target": ".github/AGENTS.md"
+    },
+    {
+      "source": "templates/pipelines__AGENTS.md.template",
+      "target": "pipelines/AGENTS.md"
+    },
+    {
+      "source": "templates/pipelines___shared__cook_runtime____init__.py.template",
+      "target": "pipelines/_shared/cook_runtime/__init__.py"
+    },
+    {
+      "source": "templates/pipelines___shared__cook_runtime__evidence.py.template",
+      "target": "pipelines/_shared/cook_runtime/evidence.py"
+    },
+    {
+      "source": "templates/pipelines___shared__cook_runtime__test_evidence.py.template",
+      "target": "pipelines/_shared/cook_runtime/test_evidence.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel____init__.py.template",
+      "target": "pipelines/_shared/fev_parallel/__init__.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel____main__.py.template",
+      "target": "pipelines/_shared/fev_parallel/__main__.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__aggregation.py.template",
+      "target": "pipelines/_shared/fev_parallel/aggregation.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__cli.py.template",
+      "target": "pipelines/_shared/fev_parallel/cli.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__coordinator.py.template",
+      "target": "pipelines/_shared/fev_parallel/coordinator.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__editor_worker.py.template",
+      "target": "pipelines/_shared/fev_parallel/editor_worker.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__ownership.py.template",
+      "target": "pipelines/_shared/fev_parallel/ownership.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__provenance.py.template",
+      "target": "pipelines/_shared/fev_parallel/provenance.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__tests____init__.py.template",
+      "target": "pipelines/_shared/fev_parallel/tests/__init__.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__tests__test_gates.py.template",
+      "target": "pipelines/_shared/fev_parallel/tests/test_gates.py"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__schemas__resource_lease.schema.json.template",
+      "target": "pipelines/_shared/fev_parallel/schemas/resource_lease.schema.json"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__schemas__run_manifest.schema.json.template",
+      "target": "pipelines/_shared/fev_parallel/schemas/run_manifest.schema.json"
+    },
+    {
+      "source": "templates/pipelines___shared__fev_parallel__schemas__sub_fev_task.schema.json.template",
+      "target": "pipelines/_shared/fev_parallel/schemas/sub_fev_task.schema.json"
+    },
+    {
+      "source": "templates/github__scripts__validate_docs_topics.py.template",
+      "target": ".github/scripts/validate_docs_topics.py"
+    },
+    {
+      "source": "templates/github__workflows__knowledge-governance.yml.template",
+      "target": ".github/workflows/knowledge-governance.yml"
+    },
+    {
+      "source": "templates/cursor__skills__pipelines-cook-invoke__SKILL.md.template",
+      "target": ".cursor/skills/pipelines-cook-invoke/SKILL.md"
+    },
+    {
+      "source": "templates/hagicode__AGENTS.md.template",
+      "target": ".hagicode/AGENTS.md"
+    },
+    {
+      "source": "templates/hagicode__monospecs.yaml.template",
+      "target": ".hagicode/monospecs.yaml"
+    },
+    {
+      "source": "templates/hagicode__standard_words.yaml.template",
+      "target": ".hagicode/standard_words.yaml"
+    },
+    {
+      "source": "templates/repos__AGENTS.md.template",
+      "target": "repos/AGENTS.md"
+    },
+    {
+      "source": "templates/repos-meta__AGENTS.md.template",
+      "target": "repos-meta/AGENTS.md"
+    },
+    {
+      "source": "templates/pipelines___shared__AGENTS.md.template",
+      "target": "pipelines/_shared/AGENTS.md"
+    },
+    {
+      "source": "templates/docs__local-environment__AGENTS.md.template",
+      "target": "docs/local-environment/AGENTS.md"
+    },
+    {
+      "source": "templates/docs__local-environment__topic.yaml.template",
+      "target": "docs/local-environment/topic.yaml"
+    },
+    {
+      "source": "templates/docs__local-environment__00-environment.md.template",
+      "target": "docs/local-environment/00-environment.md"
+    },
+    {
+      "source": "templates/openspec__project.md.template",
+      "target": "openspec/project.md"
+    },
+    {
+      "source": "templates/pipelines__.gitignore.template",
+      "target": "pipelines/.gitignore"
+    },
+    {
+      "source": "templates/pipelines___template__pipeline.md.template",
+      "target": "pipelines/_template/pipeline.md"
+    },
+    {
+      "source": "templates/pipelines___template__config.yaml.template",
+      "target": "pipelines/_template/config.yaml"
+    },
+    {
+      "source": "templates/pipelines___template__acceptance.md.template",
+      "target": "pipelines/_template/acceptance.md"
+    },
+    {
+      "source": "templates/pipelines___template__secrets.example.yaml.template",
+      "target": "pipelines/_template/secrets.example.yaml"
+    },
+    {
+      "source": "templates/github__knowledge-link-baseline.txt.template",
+      "target": ".github/knowledge-link-baseline.txt"
+    },
+    {
+      "source": "templates/bootstrap__AGENTS.md.template",
+      "target": "bootstrap/AGENTS.md"
+    }
+  ]
+}

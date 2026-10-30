@@ -1,0 +1,56 @@
+id: example-character-export-fev
+created: "2026-10-30"
+graph:
+  product: example-character-tools
+  domain: example
+  family: probe
+  goal: example-character-export-fev
+  status: active
+kind: Graph
+environment: local
+cook: new-object
+sockets:
+  start: probe-procedural-character-spec
+  end: probe-blender-ue5-character-export-verdict
+fev:
+  id: example-char
+  version: "1.2.0"
+  question: >-
+    Can a procedurally generated Blender character (armature + rigid skinned mesh + shape keys + material
+    slots + one action) be built and exported to FBX by Blender 5.1 headless, and imported by automated
+    Editor Python into UE5.8 as a native Skeleton / SkeletalMesh / MorphTarget / AnimSequence whose bone
+    hierarchy, reference pose, morph names, material slots and animation length match the Blender source?
+  design_source: docs/2026-10-30-example-character-blender-ue5/02-Pipeline设计.md
+  decisions:
+    - "2026-10-30 example owner: no external asset; the character is generated from scripts/character_spec.py"
+    - "2026-10-30 example owner: Blender runs only with --background; UE runs only in a fresh isolated AIAGENT Worker with -NullRHI"
+    - "2026-10-30 example owner: rendering, physics and Control Rig are out of scope"
+  sub_fev:
+    - id: example-char.blender-export
+      path: sub-fev/blender-export
+      runtime: blender-5.1-headless
+    - id: example-char.ue-import
+      path: sub-fev/ue-import
+      runtime: ue5.8-aiagent-worker
+context:
+  # Machine-local values (Blender / UE / AIAGENT) come from .local/environment.yaml; see
+  # pipelines/_shared/host_run/environment.example.yaml. Nothing machine-specific is tracked here.
+  ue_destination: /Game/ExampleCharacter
+  ue_asset_name: SKM_ExampleCharacter
+capture:
+  summary: {required: true, sink: summary.json}
+  report: {required: true, sink: report.md}
+  manifest: {required: true, sink: manifest.json}
+  evidence: {required: true, sink: evidence/}
+adapters:
+  cook:
+    mode: host-python
+    experimental: true
+    invokes:
+      - sub-fev/blender-export/scripts/run_blender_export.py:main
+      - sub-fev/ue-import/scripts/run_ue_import.py:main
+dependencies: []
+humanGates: []  # FEV: no per-run approval
+failurePolicy:
+  retries: 0
+  stopOnError: true

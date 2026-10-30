@@ -1,0 +1,14 @@
+version: "1.0"
+repo_dir: repos
+commit_when_archive: true
+
+repositories: []
+
+# Add only real projects authorized by the target project owner:
+# repositories:
+#   - path: "repos/<project>"
+#     url: "<repository-url>"
+#     displayName: "<project>"
+#     description: "repos-meta/<project>/"
+#     optional: true
+#     tags: [Blender]  # or [UnrealEngine]

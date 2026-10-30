@@ -1,0 +1,83 @@
+root_fev: example-char
+root_target:
+  skeleton: 18 bones, names and parents identical to character_spec.bones(); single root bone "root"
+  reference_pose: UE component-space bone positions equal blender_to_ue_cm(Blender world head) within tolerance
+  mesh: one SkeletalMesh, vertex count and material slots preserved
+  morph: MorphTarget names equal SHAPE_KEYS
+  animation: one AnimSequence with the action length (30 frames at 30 fps)
+sub_fev:
+  example-char.blender-export:
+    question: >-
+      Can Blender 5.1 --background build the character from character_spec, export one FBX with fixed
+      settings, and does a FBX re-import in a fresh scene preserve bones, rest heads, vertex count,
+      shape keys (names and max delta), material slots and action range?
+    hypothesis: The default Blender FBX exporter preserves all listed data for a rigid single-root character.
+    # unit variants: Blender scene unit scale_length; data is built in scene units (metres / scale_length)
+    default_variant: unit_cm
+    variants:
+      default_m: {scale_length: 1.0}   # Run 2026-10-30T153814 -> ue-import: root bone local scale 100
+      unit_cm: {scale_length: 0.01}    # H-scale: unit factor 1 at export, identity root in UE
+    fbx_export:
+      object_types: [ARMATURE, MESH]
+      use_selection: false
+      apply_unit_scale: true
+      apply_scale_options: FBX_SCALE_NONE
+      global_scale: 1.0
+      axis_forward: "-Z"
+      axis_up: "Y"
+      use_mesh_modifiers: true
+      mesh_smooth_type: FACE
+      add_leaf_bones: false
+      primary_bone_axis: "Y"
+      secondary_bone_axis: "X"
+      use_armature_deform_only: false
+      armature_nodetype: "NULL"
+      bake_anim: true
+      bake_anim_use_all_bones: true
+      bake_anim_use_nla_strips: false
+      bake_anim_use_all_actions: false
+      bake_anim_force_startend_keying: true
+      bake_anim_simplify_factor: 0.0
+      path_mode: STRIP
+    fbx_import:
+      automatic_bone_orientation: false
+      ignore_leaf_bones: false
+      primary_bone_axis: "Y"
+      secondary_bone_axis: "X"
+      axis_forward: "-Z"
+      axis_up: "Y"
+    tolerance:
+      position_m: 1.0e-4
+      delta_m: 1.0e-4
+    checks:
+      - {id: P0-blender-version, level: P0, rule: "bpy.app.version_string starts with 5.1"}
+      - {id: P0-blender-exit, level: P0, rule: "exit code 0 and blender_result.json stage == done"}
+      - {id: P1-fbx-written, level: P1, rule: "character.fbx exists and is non-empty"}
+      - {id: P2-bones, level: P2, rule: "re-imported bone names / parents equal the spec (18 bones)"}
+      - {id: P2-rest-heads, level: P2, rule: "re-imported world bone heads within position_m of the spec"}
+      - {id: P2-mesh, level: P2, rule: "vertex count and material slot names equal the spec"}
+      - {id: P2-shape-keys, level: P2, rule: "shape key names equal the spec; max delta within delta_m of the spec"}
+      - {id: P2-action, level: P2, rule: "an armature action exists whose frame length (end - start + 1) equals 30; start offset and take name are recorded, not judged (Run 2026-10-30T153748: re-import starts at frame 2, name Armature|Scene)"}
+  example-char.ue-import:
+    question: >-
+      Does automated UE5.8 Editor Python import of the pinned FBX produce a Skeleton / SkeletalMesh /
+      MorphTarget / AnimSequence whose bones, reference pose (hypothesis H-axis), morph names, material
+      slots and animation length match the Blender inventory?
+    hypothesis: >-
+      H-axis: with -Z forward / Y up export and convert_scene, UE component position = (x, -y, z) * 100 of the
+      Blender world head; the "Armature" object node is dropped, so "root" stays the single root bone.
+    tolerance:
+      position_cm: 0.01
+      scale_abs: 1.0e-4
+    checks:
+      - {id: P0-input, level: P0, rule: "source Run is a passing blender-export Run; FBX sha256 equals its manifest"}
+      - {id: P0-ue-version, level: P0, rule: "Engine Build.version is 5.8"}
+      - {id: P0-worker-lease, level: P0, rule: "fev_parallel lease acquired on the fresh Worker project"}
+      - {id: P0-worker-exit, level: P0, rule: "Worker owner AIAGENT, exit code 0, no visible window"}
+      - {id: P1-assets, level: P1, rule: "SkeletalMesh, Skeleton and AnimSequence assets exist under ue_destination"}
+      - {id: P2-bones, level: P2, rule: "bone names / parents equal the inventory; single root 'root'"}
+      - {id: P2-ref-pose, level: P2, rule: "component-space positions equal blender_to_ue_cm(head) within position_cm"}
+      - {id: P2-bone-scale, level: P2, rule: "every bone local scale equals 1 within scale_abs (added after Run 2026-10-30T153931 showed root scale 100)"}
+      - {id: P2-morphs, level: P2, rule: "MorphTarget names equal the inventory shape keys"}
+      - {id: P2-materials, level: P2, rule: "material slot count equals the inventory"}
+      - {id: P2-animation, level: P2, rule: "AnimSequence frame count equals the action length (30 or 29 intervals)"}

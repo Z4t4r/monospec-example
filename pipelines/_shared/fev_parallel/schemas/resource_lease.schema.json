@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fev_parallel/resource_lease.schema.json",
+  "title": "FEV 1.2.0 Resource Lease",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "lease_id",
+    "resource_id",
+    "owner_agent",
+    "root_fev",
+    "sub_fev",
+    "run_id",
+    "lease_kind",
+    "fencing_token",
+    "acquired_at",
+    "expires_at",
+    "heartbeat_at",
+    "state"
+  ],
+  "properties": {
+    "lease_id": { "type": "string", "minLength": 1 },
+    "resource_id": { "type": "string", "minLength": 1 },
+    "owner_agent": { "type": "string", "minLength": 1 },
+    "root_fev": { "type": "string", "minLength": 1 },
+    "sub_fev": { "type": "string", "minLength": 1 },
+    "run_id": { "type": "string", "minLength": 1 },
+    "lease_kind": {
+      "type": "string",
+      "enum": ["tool", "transaction", "exclusive"]
+    },
+    "fencing_token": { "type": "integer", "minimum": 1 },
+    "acquired_at": { "type": "number" },
+    "expires_at": { "type": "number" },
+    "heartbeat_at": { "type": "number" },
+    "state": {
+      "type": "string",
+      "enum": ["LEASED", "EXPIRED", "RELEASED"]
+    }
+  }
+}

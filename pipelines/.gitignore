@@ -1,0 +1,6 @@
+**/runs/
+**/secrets.local.*
+_shared/fev_parallel/.state/
+*.fev_coordinator.sqlite
+*.fev_coordinator.sqlite-*
+**/__pycache__/

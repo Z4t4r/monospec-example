@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fev_parallel/run_manifest.schema.json",
+  "title": "FEV 1.2.0 Run Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "root_fev",
+    "sub_fev",
+    "run_id",
+    "agent",
+    "fev_version",
+    "git_revision",
+    "dirty_tree_snapshot",
+    "environment",
+    "input_fingerprint",
+    "resource_leases",
+    "evidence",
+    "negative_findings",
+    "local_verdict"
+  ],
+  "properties": {
+    "root_fev": { "type": "string", "minLength": 1 },
+    "sub_fev": { "type": "string", "minLength": 1 },
+    "run_id": { "type": "string", "minLength": 1 },
+    "agent": { "type": "string", "minLength": 1 },
+    "fev_version": { "type": "string", "const": "1.2.0" },
+    "git_revision": { "type": "string", "minLength": 1 },
+    "dirty_tree_snapshot": { "type": "string", "minLength": 1 },
+    "environment": { "type": "object" },
+    "input_fingerprint": { "type": "string" },
+    "resource_leases": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": "string", "minLength": 64, "maxLength": 64 }
+        }
+      }
+    },
+    "negative_findings": { "type": "array" },
+    "local_verdict": {
+      "type": "string",
+      "enum": [
+        "FEASIBLE",
+        "NOT_FEASIBLE",
+        "PARTIALLY_FEASIBLE",
+        "BLOCKED",
+        "INCONCLUSIVE"
+      ]
+    }
+  }
+}

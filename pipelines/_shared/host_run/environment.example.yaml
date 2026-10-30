@@ -1,0 +1,9 @@
+# Copy to .local/environment.yaml (gitignored) and fill with the values discovered on this machine.
+# Discovery rules: docs/local-environment/AGENTS.md. Never track the filled copy.
+blender_executable: "<path to blender executable, 5.1.x>"
+ue_engine_root: "<UE 5.8 engine root, the folder that contains Engine/>"
+# YAML with windows_user.username / password for the AIAGENT Worker; keep it under traits/local/ or .local/
+aiagent_credentials: "traits/local/aiagent.yaml"
+aiagent_profile: "C:/Users/AIAGENT"
+# Worker projects are created below this folder; relative paths resolve against the repository root
+worker_root: "_tmp/aiagent-workers"

@@ -1,0 +1,187 @@
+{
+ "source": "character_spec via Blender build",
+ "fbx": "character.fbx",
+ "scale_length": 0.01,
+ "blender": "5.1.2",
+ "bones": [
+  {
+   "name": "root",
+   "parent": null,
+   "head_world": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "name": "pelvis",
+   "parent": "root",
+   "head_world": [
+    0.0,
+    0.0,
+    0.9499999787658453
+   ]
+  },
+  {
+   "name": "spine_01",
+   "parent": "pelvis",
+   "head_world": [
+    0.0,
+    0.0,
+    1.099999975413084
+   ]
+  },
+  {
+   "name": "spine_02",
+   "parent": "spine_01",
+   "head_world": [
+    0.0,
+    0.0,
+    1.2999999709427357
+   ]
+  },
+  {
+   "name": "neck_01",
+   "parent": "spine_02",
+   "head_world": [
+    0.0,
+    0.0,
+    1.4999999664723873
+   ]
+  },
+  {
+   "name": "head",
+   "parent": "neck_01",
+   "head_world": [
+    0.0,
+    0.0,
+    1.6199999637901783
+   ]
+  },
+  {
+   "name": "upperarm_l",
+   "parent": "spine_02",
+   "head_world": [
+    0.19999999552965164,
+    0.0,
+    1.4499999675899744
+   ]
+  },
+  {
+   "name": "lowerarm_l",
+   "parent": "upperarm_l",
+   "head_world": [
+    0.47999998927116394,
+    0.0,
+    1.4499999675899744
+   ]
+  },
+  {
+   "name": "hand_l",
+   "parent": "lowerarm_l",
+   "head_world": [
+    0.7399999834597111,
+    0.0,
+    1.4499999675899744
+   ]
+  },
+  {
+   "name": "upperarm_r",
+   "parent": "spine_02",
+   "head_world": [
+    -0.19999999552965164,
+    0.0,
+    1.4499999675899744
+   ]
+  },
+  {
+   "name": "lowerarm_r",
+   "parent": "upperarm_r",
+   "head_world": [
+    -0.47999998927116394,
+    0.0,
+    1.4499999675899744
+   ]
+  },
+  {
+   "name": "hand_r",
+   "parent": "lowerarm_r",
+   "head_world": [
+    -0.7399999834597111,
+    0.0,
+    1.4499999675899744
+   ]
+  },
+  {
+   "name": "thigh_l",
+   "parent": "pelvis",
+   "head_world": [
+    0.1099999975413084,
+    0.0,
+    0.9499999787658453
+   ]
+  },
+  {
+   "name": "calf_l",
+   "parent": "thigh_l",
+   "head_world": [
+    0.1099999975413084,
+    0.0,
+    0.5199999883770943
+   ]
+  },
+  {
+   "name": "foot_l",
+   "parent": "calf_l",
+   "head_world": [
+    0.1099999975413084,
+    0.0,
+    0.09999999776482582
+   ]
+  },
+  {
+   "name": "thigh_r",
+   "parent": "pelvis",
+   "head_world": [
+    -0.1099999975413084,
+    0.0,
+    0.9499999787658453
+   ]
+  },
+  {
+   "name": "calf_r",
+   "parent": "thigh_r",
+   "head_world": [
+    -0.1099999975413084,
+    0.0,
+    0.5199999883770943
+   ]
+  },
+  {
+   "name": "foot_r",
+   "parent": "calf_r",
+   "head_world": [
+    -0.1099999975413084,
+    0.0,
+    0.09999999776482582
+   ]
+  }
+ ],
+ "vertex_count": 136,
+ "materials": [
+  "M_Body",
+  "M_Head"
+ ],
+ "shape_keys": [
+  "head_scale_up",
+  "belly_out"
+ ],
+ "action": {
+  "name": "wave",
+  "fps": 30,
+  "frames": [
+   1,
+   30
+  ]
+ }
+}

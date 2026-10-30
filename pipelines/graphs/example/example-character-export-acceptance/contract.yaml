@@ -1,0 +1,15 @@
+tolerance:
+  position_m: 1.0e-4
+  position_cm: 0.01
+  scale_abs: 1.0e-4
+checks:
+  - {id: L1-unit-tests, level: L1, rule: "python -m unittest discover -s tests passes in repos/example-character-tools"}
+  - {id: L1-addon-register, level: L1, rule: "Blender --background: register() adds bpy.ops.exchar.export_character; unregister() removes it"}
+  - {id: L1-cli-exit, level: L1, rule: "production CLI exits 0 and writes ExampleCharacter.fbx + ExampleCharacter.inventory.json"}
+  - {id: L2-ue-assets, level: L2, rule: "UE5.8 Worker import of the CLI FBX creates SkeletalMesh, Skeleton and AnimSequence"}
+  - {id: L2-ue-skeleton, level: L2, rule: "single root 'root'; bone names / parents equal the inventory; every local scale 1 within scale_abs"}
+  - {id: L2-ue-ref-pose, level: L2, rule: "component positions equal blender_to_ue_cm(head_world) within position_cm"}
+  - {id: L2-ue-morph-material-anim, level: L2, rule: "MorphTargets equal shape_keys; slot count equals materials; AnimSequence frames equal action length or length - 1"}
+  - {id: L3-fev-parity, level: L3, rule: "CLI inventory equals FEV canonical: bones / parents, heads within position_m, vertex_count, materials, shape_keys, action length"}
+  - {id: L3-operator, level: L3, rule: "exchar.export_character(directory=...) returns FINISHED and its inventory equals the CLI inventory"}
+  - {id: L3-invalid-input, level: L3, rule: "CLI with a two-root --spec exits 2, prints INVALID_INPUT and writes no FBX"}

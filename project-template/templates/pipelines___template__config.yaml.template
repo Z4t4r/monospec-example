@@ -1,0 +1,35 @@
+id: "{{slug}}"
+created: "{{created}}"
+graph:
+  product: "{{project}}"
+  domain: "{{domain}}"
+  family: transform
+  goal: "{{goal}}"
+  status: draft
+kind: Subnet
+environment: local
+sockets:
+  start: "{{socket_start}}"
+  end: "{{socket_end}}"
+cook: in-place
+steps:
+  - bind
+  - cook
+  - validate
+expect: []
+capture:
+  summary:
+    required: true
+    sink: summary.json
+  report:
+    required: true
+    sink: report.md
+adapters:
+  cook:
+    mode: blender-invoke
+    symbol: ""
+    experimental: true
+humanGates: []  # FEV 无 per-run approval；业务最终用户验收按需显式声明
+failurePolicy:
+  retries: 0
+  stopOnError: true
