@@ -45,6 +45,6 @@
 - 本目录不落盘 `README.md`。
 - 编排仓 Trait 不默认同步到 `repos/*/traits/`。
 - 已退役版本只保留在 `archive/`；archive 内容是 non-normative history。Bootstrap 不复制来源历史。
-- `traits/local/` 是本机 secrets 目录（已被 `.gitignore`）；**MUST NOT** commit、同步或把其中凭据复制进 tracked Trait / docs / Evidence。
+- 本机 secrets（如 AIAGENT 凭据 `.local/aiagent.yaml`）统一放在仓库根 gitignored 的 `.local/`，不放在 `traits/` 下；**MUST NOT** commit、同步或把其中凭据复制进 tracked Trait / docs / Evidence。
 
 <!-- /bmad:context -->

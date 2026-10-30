@@ -83,7 +83,7 @@ AIAGENT 仅管理自身进程，不拥有 Human Editor 的生命周期控制权�
 - 默认使用标准用户权限。
 - 不得长期依赖管理员权限。
 - 不得把登录凭据写入任何 **tracked** 文件、Trait 正文、Evidence、commit 或共享文档。
-- 本机允许将凭据放在 gitignored 的 `local/aiagent.yaml`（目录 `traits/local/`）；Agent 需要时再读取，不得回写到仓库。
+- 本机允许将凭据放在仓库根 gitignored 的 `.local/aiagent.yaml`；Agent 需要时再读取，不得回写到仓库。
 - 不得修改系统 DLL 或绕过 Windows 会话限制。
 
 ### 3.2 Session Behavior

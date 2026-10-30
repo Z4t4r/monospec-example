@@ -5,9 +5,9 @@ blender_executable: "<path to blender executable, 5.1.x>"
 ue_engine_root: "<UE 5.8 engine root, the folder that contains Engine/>"
 
 # Optional; the defaults below apply when a key is omitted.
-# YAML with windows_user.username / password for the AIAGENT Worker. Keep it inside this repository's gitignored
-# traits/local/ (default) instead of pointing at another checkout, so the repository stays self-contained.
-# aiagent_credentials: "traits/local/aiagent.yaml"
+# YAML with windows_user.username / password for the AIAGENT Worker. Keep it next to this file in the gitignored
+# .local/ (default) instead of pointing at another checkout, so all machine-local data stays in one folder.
+# aiagent_credentials: ".local/aiagent.yaml"
 # aiagent_profile: "C:/Users/AIAGENT"
 # Worker projects are created below this folder
 # worker_root: "_tmp/aiagent-workers"

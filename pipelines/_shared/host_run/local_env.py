@@ -23,9 +23,9 @@ KEYS = {
     "worker_root": "MONOSPEC_WORKER_ROOT",
 }
 
-# Repository-relative defaults; the credential file stays in the gitignored traits/local/ of this repository.
+# Repository-relative defaults; machine-local files (including the credential) stay in the gitignored .local/.
 DEFAULTS = {
-    "aiagent_credentials": "traits/local/aiagent.yaml",
+    "aiagent_credentials": ".local/aiagent.yaml",
     "aiagent_profile": "C:/Users/AIAGENT",
     "worker_root": "_tmp/aiagent-workers",
 }
