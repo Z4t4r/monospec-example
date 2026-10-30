@@ -55,7 +55,7 @@ def launch(*, env: LocalEnvironment, run: Path, graph_id: str, owner_id: str, en
     import yaml
 
     evidence = run / "evidence"
-    worker_base = env.path("worker_root") or REPOSITORY_ROOT / "_tmp" / "aiagent-workers"
+    worker_base = env.path("worker_root")
     root = (worker_base / graph_id / f"{owner_id.replace('/', '-')}-{run.name.replace('-', '')}").resolve()
     output = root / "Saved" / "MonoSpecEvidence"
     manifest.setdefault("configuration", {}).update({"worker_root": str(root), "timeout": timeout,
@@ -63,9 +63,9 @@ def launch(*, env: LocalEnvironment, run: Path, graph_id: str, owner_id: str, en
     try:
         engine = env.path("ue_engine_root")
         credentials = env.path("aiagent_credentials")
-        profile = env.path("aiagent_profile") or Path("C:/Users/AIAGENT")
-        if engine is None or credentials is None:
-            raise FileNotFoundError("ue_engine_root / aiagent_credentials not configured (.local/environment.yaml)")
+        profile = env.path("aiagent_profile")
+        if engine is None or credentials is None or profile is None or worker_base is None:
+            raise FileNotFoundError("ue_engine_root / aiagent_credentials / aiagent_profile / worker_root not configured")
         build = engine_version(engine)
         manifest.setdefault("environment", {})["engine"] = build
         version_ok = (build["MajorVersion"], build["MinorVersion"]) == (5, 8)

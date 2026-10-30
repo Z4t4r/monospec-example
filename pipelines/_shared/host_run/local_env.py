@@ -1,7 +1,8 @@
 """host-evidence: resolve machine-local executables and Worker settings without tracking them.
 
-Resolution order per key: explicit CLI value -> environment variable -> ``.local/environment.yaml``.
-Tracked example: ``pipelines/_shared/host_run/environment.example.yaml``.
+Resolution order per key: explicit CLI value -> environment variable -> ``.local/environment.yaml`` -> DEFAULTS.
+Values may use ``~`` and environment variables (``%USERPROFILE%`` / ``$HOME``); relative paths resolve against the
+repository root. Tracked example: ``pipelines/_shared/host_run/environment.example.yaml``.
 """
 
 from __future__ import annotations
@@ -22,6 +23,13 @@ KEYS = {
     "worker_root": "MONOSPEC_WORKER_ROOT",
 }
 
+# Repository-relative defaults; the credential file stays in the gitignored traits/local/ of this repository.
+DEFAULTS = {
+    "aiagent_credentials": "traits/local/aiagent.yaml",
+    "aiagent_profile": "C:/Users/AIAGENT",
+    "worker_root": "_tmp/aiagent-workers",
+}
+
 
 @dataclass(frozen=True)
 class LocalEnvironment:
@@ -32,7 +40,7 @@ class LocalEnvironment:
         value = self.values.get(key)
         if not value:
             return None
-        path = Path(value)
+        path = Path(os.path.expanduser(os.path.expandvars(value)))
         return path if path.is_absolute() else REPOSITORY_ROOT / path
 
     def describe(self) -> dict:
@@ -56,6 +64,8 @@ def load_local_environment(overrides: Mapping[str, str | None] | None = None) ->
             values[key], sources[key] = os.environ[variable], "env:" + variable
         elif file_values.get(key):
             values[key], sources[key] = str(file_values[key]), ".local/environment.yaml"
+        elif DEFAULTS.get(key):
+            values[key], sources[key] = DEFAULTS[key], "default"
         else:
             values[key], sources[key] = None, "missing"
     return LocalEnvironment(values=values, sources=sources)
